@@ -1,0 +1,13 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name2:</b>
+  <%= @user.name %>
+</p>
+<% @user.own.each do |c| %>
+
+<%= c.assertName %>
+<% end %>
+
+<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Back', users_path %>

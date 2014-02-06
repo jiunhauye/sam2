@@ -1,0 +1,25 @@
+<%= form_for(@assert) do |f| %>
+  <% if @assert.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@assert.errors.count, "error") %> prohibited this assert from being saved:</h2>
+
+      <ul>
+      <% @assert.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :assertName %><br />
+    <%= f.text_field :assertName %>
+  </div>
+  <div class="field">
+    <%= f.label :community %><br />
+    <%= f.text_field :community %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Assertname:</b>
+  <%= @assert.assertName %>
+</p>
+
+<p>
+  <b>Community:</b>
+  <%= @assert.community %>
+</p>
+
+
+<%= link_to 'Edit', edit_assert_path(@assert) %> |
+<%= link_to 'Back', asserts_path %>
