@@ -6,7 +6,31 @@ class AssertsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @asserts }
+      format.json do
+        #get all assert relations(source,rel,target)
+        links = []
+        @rels = Neo4j._query('START root=node(*) MATCH (root)-[r]->(m) WHERE HAS(root._classname) and root._classname="Assert" RETURN id(root) as source, type(r) as rel, id(m) as target')
+        @rels.each do |link|
+          links << link
+        end
+        
+        #get all links
+        nodes = @asserts.map{|a| {:name => a.assertName, :id => a.neo_id}}
+        
+        #update links source and target to right nodes position for D3.js
+        # temp = {}
+        # nodes.each_with_index do |node,index|
+          # #puts node[:id]
+          # temp.merge!(node[:id] => index)
+        # end
+# 
+        # links = links.map { |l| {:source => temp[l[:source]], :target => temp[l[:target]] , :rel => l[:rel]}} 
+        
+        links = links.map {|l| {:source => nodes.find_index{|n| n[:id] == l[:source]}, :target => nodes.find_index{|n| n[:id] == l[:target]} , :rel => l[:rel][7..-1]}}
+        
+        #render json: @asserts
+        render :json => {:nodes => nodes, :links => links}
+      end 
     end
   end
 

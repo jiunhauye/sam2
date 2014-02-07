@@ -11,3 +11,58 @@
  *= require_self
  *= require_tree .
  */
+circle.node {
+    stroke: #74a1db;
+    stroke-width: 1.5px;
+}
+
+line.link {
+	fill: green;
+    stroke: #999;
+    stroke-opacity: .6;
+}
+
+.link {
+  fill: none;
+  stroke: #666;
+  stroke-width: 1.5px;
+}
+
+.link.compose {
+  stroke: green;
+}
+
+.link.include {
+  stroke: green;
+}
+
+.link.aggregate {
+  stroke: green;
+}
+
+.link.depend {
+  stroke: green;
+}
+
+.link.use {
+  stroke: green;
+}
+
+.link.support {
+  stroke: green;
+}
+
+
+
+.link.realize {
+  stroke-dasharray: 0,2 1;
+}
+
+
+.link.implement {
+  stroke-dasharray: 0,2 1;
+}
+
+.link.refer {
+  stroke-dasharray: 0,2 1;
+}
