@@ -13,6 +13,8 @@ class Assert < Neo4j::Rails::Model
   has_n(:realize).to(Assert)
   has_n(:implement).to(Assert)
   has_n(:refer).to(Assert)
-  
+  def as_json(options={})
+    super(options || {})["assert"].merge({:id => self.neo_id})
+  end
   
 end

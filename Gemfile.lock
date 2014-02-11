@@ -39,6 +39,7 @@ GEM
       execjs
     coffee-script-source (1.7.0)
     diff-lcs (1.2.5)
+    ejs (1.0.0)
     erubis (2.7.0)
     execjs (2.0.2)
     hike (1.2.3)
@@ -86,6 +87,10 @@ GEM
       activesupport (= 3.2.16)
       bundler (~> 1.0)
       railties (= 3.2.16)
+    rails-backbone (0.7.2)
+      coffee-script (~> 2.2.0)
+      ejs (~> 1.0.0)
+      railties (>= 3.1.0)
     railties (3.2.16)
       actionpack (= 3.2.16)
       activesupport (= 3.2.16)
@@ -141,6 +146,7 @@ DEPENDENCIES
   neo4j (>= 2.2.3)
   neo4j-admin (= 0.2.0)
   rails (= 3.2.16)
+  rails-backbone
   rspec-rails
   sass-rails (~> 3.2.3)
   therubyrhino

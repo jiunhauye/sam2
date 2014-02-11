@@ -1,12 +1,10 @@
 class AssertsController < ApplicationController
-  # GET /asserts
-  # GET /asserts.json
-  def index
+  
+  def tree
     @asserts = Assert.all
-
     respond_to do |format|
-      format.html # index.html.erb
-      format.json do
+       format.json do
+        
         #get all assert relations(source,rel,target)
         links = []
         @rels = Neo4j._query('START root=node(*) MATCH (root)-[r]->(m) WHERE HAS(root._classname) and root._classname="Assert" RETURN id(root) as source, type(r) as rel, id(m) as target')
@@ -32,8 +30,19 @@ class AssertsController < ApplicationController
         render :json => {:nodes => nodes, :links => links}
       end 
     end
-  end
+  end 
+  # GET /asserts
+  # GET /asserts.json
+  def index
+    @asserts = Assert.all
 
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @asserts }
+     
+    end
+  end
+  
   # GET /asserts/1
   # GET /asserts/1.json
   def show

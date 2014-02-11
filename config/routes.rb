@@ -1,5 +1,5 @@
 Sam2::Application.routes.draw do
-  resources :domains
+  resources :domains 
 
 
   resources :solutions
@@ -11,7 +11,9 @@ Sam2::Application.routes.draw do
   resources :users
 
 
-  resources :asserts
+  resources :asserts do
+    get 'tree', on: :collection
+  end
 
 
   # The priority is based upon order of creation:

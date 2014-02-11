@@ -3,7 +3,7 @@ class SolutionsController < ApplicationController
   # GET /solutions.json
   def index
     @solutions = Solution.all
-
+    
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @solutions }
@@ -18,6 +18,7 @@ class SolutionsController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @solution }
+      #format.json { render :json => @solution.to_json(:include => [:neo_id])}
     end
   end
 

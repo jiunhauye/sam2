@@ -1,23 +1,9 @@
-<h1>Listing communities</h1>
+<div id="communities"></div>
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @communities.each do |community| %>
-  <tr>
-    <td><%= community.name %></td>
-    <td><%= link_to 'Show', community %></td>
-    <td><%= link_to 'Edit', edit_community_path(community) %></td>
-    <td><%= link_to 'Destroy', community, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New Community', new_community_path %>
+<script type="text/javascript">
+	$(function(){
+		window.router = new Sam2.Routers.CommunitiesRouter({communities: <%= @communities.to_json.html_safe-%>});
+		Backbone.history.start();
+	})
+</script>
+	

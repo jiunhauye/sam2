@@ -14,4 +14,9 @@
 //= require jquery_ujs
 //= require d3
 //= require asserts
+//= require underscore
+//= require backbone
+//= require backbone_rails_sync
+//= require backbone_datalink
+//= require backbone/sam2
 //= require_tree .

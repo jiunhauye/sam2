@@ -1,0 +1,8 @@
+<div id="solutions"></div>
+
+<script type="text/javascript">
+	$(function(){
+		window.router = new Sam2.Routers.SolutionsRouter({solutions: <%= @solutions.to_json.html_safe -%>});
+		Backbone.history.start();
+	});
+</script>
