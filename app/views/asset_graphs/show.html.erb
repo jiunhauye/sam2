@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Graph:</b>
+  <%= @asset_graph.graph %>
+</p>
+
+<p>
+  <b>File:</b>
+  <%= @asset_graph.file %>
+</p>
+
+
+<%= link_to 'Edit', edit_asset_graph_path(@asset_graph) %> |
+<%= link_to 'Back', asset_graphs_path %>

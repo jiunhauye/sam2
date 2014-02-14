@@ -1,4 +1,12 @@
 Sam2::Application.routes.draw do
+  resources :asset_graphs
+
+
+  resources :assets do
+    get 'tree', on: :collection
+  end
+
+
   resources :domains 
 
 
@@ -11,9 +19,9 @@ Sam2::Application.routes.draw do
   resources :users
 
 
-  resources :asserts do
-    get 'tree', on: :collection
-  end
+  # resources :asserts do
+    # get 'tree', on: :collection
+  # end
 
 
   # The priority is based upon order of creation:

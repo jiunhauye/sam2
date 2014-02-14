@@ -21,12 +21,17 @@ class AssertsController < ApplicationController
           # #puts node[:id]
           # temp.merge!(node[:id] => index)
         # end
-# 
+
+        #Imporve coding style
         # links = links.map { |l| {:source => temp[l[:source]], :target => temp[l[:target]] , :rel => l[:rel]}} 
         
-        links = links.map {|l| {:source => nodes.find_index{|n| n[:id] == l[:source]}, :target => nodes.find_index{|n| n[:id] == l[:target]} , :rel => l[:rel][7..-1]}}
         
+        #links = links.map {|l| {:source => nodes.find_index{|n| n[:id] == l[:source]}, :target => nodes.find_index{|n| n[:id] == l[:target]} , :rel => l[:rel][7..-1]}}
+        
+        #Because we ignore the asset model from .to(Asset) to nil, so don't need [7...-1] normailize relation Asset.Compose --> Compose 
+        links = links.map {|l| {:source => nodes.find_index{|n| n[:id] == l[:source]}, :target => nodes.find_index{|n| n[:id] == l[:target]} , :rel => l[:rel]}}
         #render json: @asserts
+        puts links
         render :json => {:nodes => nodes, :links => links}
       end 
     end

@@ -28,41 +28,36 @@ line.link {
   stroke-width: 1.5px;
 }
 
-.link.compose {
+.link.Compose {
   stroke: green;
 }
 
-.link.include {
+.link.Parent {
   stroke: green;
 }
 
-.link.aggregate {
-  stroke: green;
-}
-
-.link.depend {
-  stroke: green;
-}
-
-.link.use {
-  stroke: green;
-}
-
-.link.support {
-  stroke: green;
-}
-
-
-
-.link.realize {
+.link.AssociateWith {  
   stroke-dasharray: 0,2 1;
 }
 
-
-.link.implement {
-  stroke-dasharray: 0,2 1;
+.link.Aggregate {
+  stroke: blue;
 }
 
-.link.refer {
-  stroke-dasharray: 0,2 1;
+
+.link.Aggregation {
+  stroke: blue;
 }
+
+
+
+.link.Realize {
+  stroke: red;
+}
+
+
+.link.Inherit {
+  stroke: red;
+}
+
+  

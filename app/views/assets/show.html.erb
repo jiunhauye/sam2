@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Assetname:</b>
+  <%= @asset.assetName %>
+</p>
+
+<p>
+  <b>Community:</b>
+  <%= @asset.community %>
+</p>
+
+<p>
+  <b>Shortdescription:</b>
+  <%= @asset.shortDescription %>
+</p>
+
+<p>
+  <b>Version:</b>
+  <%= @asset.version %>
+</p>
+
+<p>
+  <b>State:</b>
+  <%= @asset.state %>
+</p>
+
+
+<%= link_to 'Edit', edit_asset_path(@asset) %> |
+<%= link_to 'Back', assets_path %>
