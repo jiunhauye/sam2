@@ -11,6 +11,7 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
+//= require_tree ../../../vendor/assets/javascripts/
 //= require jquery_ujs
 //= require d3
 //= require asserts

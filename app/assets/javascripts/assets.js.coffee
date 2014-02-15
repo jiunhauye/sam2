@@ -1,19 +1,21 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
-$(document).ready ->
-  graph_mash
+w = 0
+h = 0
+ratio = 0
+maxAge = 120
+ABS_MAX = 200
+force = null 
+force2 = null 
+nodes = null
+links = null
 
-graph_layer ->
-  data = {}
-  $.ajax({
-    dataType: "json",
-    url: "/assets/tree.json",
-    data: data,
-    success: success
-  });  
+
+graph_layer = (data) ->
   
-  console.log("data==>"+data)
+  console.log("data==>")
+  console.log(data)
   
   $("#about").dialog
     autoOpen: not 1
@@ -49,7 +51,7 @@ graph_layer ->
     max: ABS_MAX
     value: maxAge
  
-graph_layer_drawChart(data) ->
+graph_layer_drawChart = (data) ->
   null isnt d3.select("#graph") and d3.select("#graph").remove()
   null isnt force and force.stop()
   null isnt force2 and force2.stop()
@@ -96,7 +98,7 @@ graph_layer_drawChart(data) ->
   ]).gravity(0).nodes(e).links(g).start()
   links = c.append("g").attr("class", "linkContainer").selectAll(".link").data(g).enter().append("line").attr("class", "link")
   nodes = c.append("g").attr("class", "nodeContainer").selectAll(".node").data(e).enter().append("image").call(force.drag).attr("xlink:href", (a) ->
-    getImageName a.name
+    graph_layer_getImageName a.name
   ).attr("id", (a) ->
     a.name
   ).attr("class", "image").attr("x", -25).attr("y", -25).attr("width", 50).attr("height", 50).attr("cursor", "pointer").on("click", (a) ->
@@ -124,16 +126,18 @@ graph_layer_drawChart(data) ->
     nodes.attr "transform", (a) ->
       "translate(" + a.x + "," + a.y + ")"
   
-    
+graph_layer_getImageName = (a) ->
+  # a = a.toLowerCase().replace(/[ -]/g, "_")
+  ".assets/image/" + a + ".jpg"    
 
 
 
 
-graph_layer_drawReference(a,b,c,maxLayer) ->
+graph_layer_drawReference = (a,b,c,maxLayer) ->
   a=a.append("g").attr("id","referenceGroup").attr("class","referenceGroup")
   e = d3.scale.linear().domain([0,maxLayer]).range([d3.rgb(100, 80, 30), "lightyellow" ])
   g = d3.scale.linear().domain([0,maxLayer]).range([d3.rgb(200, 150, 150),"darkred"])
-  k = Math.round(0.1 * maxLayer)
+  k = 1
   d = maxLayer
 
   while 0 < d
@@ -147,7 +151,7 @@ graph_layer_drawReference(a,b,c,maxLayer) ->
     a.append("svg:text").text(d).attr("x", b - f - 5).attr("y", c).style "fill", l
     d -= k
 
-graph_mash ->
+graph_mash = ()->
   w = 1260
   h = 1300
   fill = d3.scale.category20()
@@ -237,5 +241,13 @@ graph_mash ->
     
   )
 
+test = ->
+  alert("I am here")
   
+
+$(document).ready ->  
+  d3.json("/assets/tree.json", (json) ->
+    graph_layer(json)  
+  )
+    
  

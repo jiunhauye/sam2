@@ -1,0 +1,9 @@
+<div id="assets"></div>
+<script type="text/javascript">
+	$(function(){
+		window.router = new Sam2.Routers.AssetsRouter({assets: <%= @assets.to_json.html_safe -%>});
+		Backbone.history.start();
+	});
+</script>
+
+<div id="graph"></div>

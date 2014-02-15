@@ -57,7 +57,7 @@ class AssetGraphsController < ApplicationController
           when "data"
             construct[:domainPath] = value["path"]
             construct[:state] = value["state"]
-            construct[:level] = value["layer"]
+            construct[:layer] = value["level"].to_i
             construct[:version] = value["version"]
           when "adjacencies"
              adjacencies = value
@@ -66,12 +66,16 @@ class AssetGraphsController < ApplicationController
         end 
       end    
       puts "asset construct:#{construct}"
-      
-      result = Asset.new(construct)
+      puts "assetId: #{construct[:assetId]}"
+      #result = Asset.find("assetId: #{construct[:assetId]}")
+      #result = Asset.find(:first, :conditions => { :assetId => construct[:assetId] } , type: :fulltext)
+      result = Asset.find(:first, "assetId: "+construct[:assetId] , type: :fulltext)
+      #result = Asset.new(construct)
+      #puts "==>"+result
       puts result.assetId
       ##OK Prepare to saving
       #result.save
-      
+      result.update_attributes(construct)
       Asset.class_eval do
         def setAdjacencies(adjacencies)
           @adjacencies=adjacencies
