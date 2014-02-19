@@ -4,6 +4,7 @@ Sam2::Application.routes.draw do
 
   resources :assets do
     get 'tree', on: :collection
+    get 'backend', on: :collection
   end
 
 

@@ -11,53 +11,6 @@
  *= require_self
  *= require_tree .
  */
-circle.node {
-    stroke: #74a1db;
-    stroke-width: 1.5px;
-}
-
-line.link {
-	fill: green;
-    stroke: #999;
-    stroke-opacity: .6;
-}
-
-.link {
-  fill: none;
-  stroke: #666;
-  stroke-width: 1.5px;
-}
-
-.link.Compose {
-  stroke: green;
-}
-
-.link.Parent {
-  stroke: green;
-}
-
-.link.AssociateWith {  
-  stroke-dasharray: 0,2 1;
-}
-
-.link.Aggregate {
-  stroke: blue;
-}
-
-
-.link.Aggregation {
-  stroke: blue;
-}
-
-
-
-.link.Realize {
-  stroke: red;
-}
-
-
-.link.Inherit {
-  stroke: red;
-}
+//= require_tree ../../../vendor/assets/stylesheets/
 
   

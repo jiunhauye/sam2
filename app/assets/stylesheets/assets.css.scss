@@ -1,6 +1,44 @@
 // Place all the styles related to the Assets controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+ 
+
+
+.Compose {
+  stroke: green;
+}
+
+.Parent {
+  stroke: green;
+}
+
+.AssociateWith { 
+  stroke: black; 
+  stroke-dasharray: 0,2 1;
+}
+
+.Aggregate {
+  stroke: blue;
+}
+
+
+.Aggregation {
+  stroke: blue;
+}
+
+
+
+.Realize {
+  stroke: red;
+}
+
+
+.Inherit {
+  stroke: red;
+}
+
+
 body {
   //background-image: url('watermark.jpg');
   padding: 0px;
@@ -13,8 +51,31 @@ body {
 }
 
 .link {
-  stroke: #999;
-  stroke-opacity: .6;
+  
+  stroke: red;
+  //stroke: #999;
+  //stroke-opacity: .6;
+}
+.link2 {
+  
+  stroke: red;
+  //stroke: #999;
+  //stroke-opacity: .6;
+}
+.sudo {
+  stroke: #ddd;
+  stroke-opacity: 0;
+ 
+  //stroke: green;
+ 
+}
+
+.sudoSameLayer {
+  stroke: #ddd;
+  stroke-opacity: 0;
+ 
+  //stroke: green;
+ 
 }
 
 #graphHolder {

@@ -1,4 +1,22 @@
 class AssetsController < ApplicationController
+  def backend
+    @assets = Asset.all    
+    @assets.each do |a|  
+      case a.layer 
+        when "0" then a.update_attributes({:layer => "solution" })
+        when "1" then a.update_attributes({:layer => "strategy" })
+        when "2" then a.update_attributes({:layer => "operation" })
+        when "3" then a.update_attributes({:layer => "execution" })
+        when "4" then a.update_attributes({:layer => "implementation" })
+        when "strategry" then a.update_attributes({:layer => "strategy" })          
+          
+        else puts "has other layer? #{a.layer}"
+      end
+     end
+     respond_to do |format|
+       
+     end
+  end
   def tree
     @assets = Asset.all
     respond_to do |format|
@@ -12,7 +30,7 @@ class AssetsController < ApplicationController
         end
         
         #get all links
-        nodes = @assets.map{|a| {:name => a.assetName, :id => a.neo_id}}
+        nodes = @assets.map{|a| {:name => a.assetName, :id => a.neo_id, :layer => a.layer, :shortDescription => a.shortDescription}}
         
         #update links source and target to right nodes position for D3.js
         # temp = {}
