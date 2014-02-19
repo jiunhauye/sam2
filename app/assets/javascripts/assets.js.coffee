@@ -4,6 +4,10 @@
 w = 0
 h = 0
 ratio = 0
+## configuration     
+class ControlPanel
+    constructor: (@isShowLinks=false,@selectedNode=[]) ->
+      
 class LayerInfo
   this.solution = "solution"
   this.strategy = "strategy"
@@ -13,7 +17,7 @@ class LayerInfo
   this.layer = [new LayerInfo(LayerInfo.solution), new LayerInfo(LayerInfo.strategy),new LayerInfo(LayerInfo.operation),new LayerInfo(LayerInfo.execution),new LayerInfo(LayerInfo.implementation)]
   this.layerDomain = [this.solution, this.strategy,  this.operation,  this.execution, this.implementation]
   this.layerRange = d3.scale.ordinal().domain(this.layerDomain).range([0,1,2,3,4])  
-  
+  this.controlPanel = new ControlPanel()
   distancelinear : null
   constructor: (@layer,@totalRels =0,@totalNodes=0) ->
   
@@ -27,9 +31,10 @@ class LayerInfo
     result = formula(weight) 
     console.log("layer/rels/weight/unit/max/result:"+ LayerInfo.layerRange(@layer)+"/"+ @totalRels+"/"+weight+"/"+unit+"/"+max+"/"+result)
     result
-     
-  
-  # linear = d3.scale.linear().domain().range([0,1])
+
+
+    
+# linear = d3.scale.linear().domain().range([0,1])
 layer = LayerInfo.layer
 maxLayer = (layer.length)-1
 ABS_MAX = maxLayer
@@ -38,6 +43,9 @@ force2 = null
 nodes = null
 links = null
 data = null
+
+
+
 
 graph_layer = (json) ->
   data = json
@@ -72,15 +80,37 @@ graph_layer = (json) ->
   $("#chartSelector").html b
   $("#chartSelector").buttonset()
   $("#chartSelector").change (a) ->
+    $('#node-button').removeClass('on').html('NO')
+    layer.forEach (v,i) ->
+        if $("#" + v.layer).prop("checked")
+          $('#node-button').addClass('on').html('YES')      
     graph_layer_drawChart()
   
   graph_layer_drawChart()
-  $("#slider").slider
-    change: graph_layer_maxlayerChange
-    min: 1
-    max: ABS_MAX
-    value: maxLayer
 
+    
+  $('#rel-button').toggle( -> 
+      $(this).addClass('on').html('YES')
+      LayerInfo.controlPanel.isShowLinks = true
+      graph_layer_drawChart()
+    , ->
+      $(this).removeClass('on').html('NO')
+      LayerInfo.controlPanel.isShowLinks = false
+      LayerInfo.controlPanel.selectedNode = []
+      graph_layer_drawChart()
+  );
+  $('#node-button').toggle( -> 
+      layer.forEach (v,i) ->
+        $("#" + v.layer).prop("checked",true).button("refresh") if i isnt 0
+      $(this).addClass('on').html('YES')
+      graph_layer_drawChart()
+    , ->
+      layer.forEach (v,i) ->
+        $("#" + v.layer).prop("checked",false).button("refresh")  if i isnt 0
+      $(this).removeClass('on').html('NO')
+      graph_layer_drawChart()
+  );
+  
 graph_layer_maxlayerChange = (a,b) ->
   maxLayer=b.value
   graph_layer_drawChart()
@@ -113,11 +143,7 @@ graph_layer_drawChart = () ->
   k = {} #record index transformation
   d = 0
   ##Relink all source and target
-  console.log($("#solution").prop("checked"))
-  console.log($("#strategy").prop("checked"))
-  console.log($("#operation").prop("checked"))
-  console.log($("#execution").prop("checked"))
-  console.log($("#implementation").prop("checked"))
+
   
   solutionIndex = 0
   data.nodes.forEach (l, a) ->
@@ -131,23 +157,26 @@ graph_layer_drawChart = () ->
       k[a] = d ##record lastest mapping 
       d++
     return
-
-  ##add link
-  data.links.forEach (a, b) ->
-    console.log(k[a.source])
-    if k[a.source] isnt `undefined` and k[a.source]? and k[a.target] isnt `undefined` and k[a.target]? 
-      g.push(
-        source: k[a.source]
-        target: k[a.target]
-        class:  a.rel
-        ori: a
-      )
-      # e[k[a.source]].count++
-      e[k[a.target]].count++
-      # layer[LayerInfo.layerRange(e[k[a.source]]["layer"])].totalRels++
-      layer[LayerInfo.layerRange(e[k[a.target]]["layer"])].totalRels++
-    return
+    
+  if LayerInfo.controlPanel.isShowLinks ## check is showLinks
+    ##add link
+    data.links.forEach (a, b) ->
+      console.log(k[a.source])
+      if k[a.source] isnt `undefined` and k[a.source]? and k[a.target] isnt `undefined` and k[a.target]? 
+        if LayerInfo.controlPanel.selectedNode.length is 0 or  (LayerInfo.controlPanel.selectedNode.indexOf(data.nodes[a.source]) > -1) or  (LayerInfo.controlPanel.selectedNode.indexOf(data.nodes[a.target]) > -1)##user selected
+          g.push(
+            source: k[a.source]
+            target: k[a.target]
+            class:  a.rel
+            ori: a
+          )
+          # e[k[a.source]].count++
+          e[k[a.target]].count++
+          # layer[LayerInfo.layerRange(e[k[a.source]]["layer"])].totalRels++
+          layer[LayerInfo.layerRange(e[k[a.target]]["layer"])].totalRels++
+      return
   
+    
   
   ##add sudo for fix lay link
   tmp = 0
@@ -276,16 +305,29 @@ graph_layer_drawChart = () ->
     graph_layer_getImageName a.layer
   ).attr("id", (a) ->
     a.name
-  ).attr("class", "image").attr("x", -25).attr("y", -25).attr("width", 25).attr("height", 25).attr("cursor", "pointer").on("click", (a) ->
+  ).attr("class", "image").attr("x", -12.5).attr("y", -12.5).attr("width", 25).attr("height", 25).attr("cursor", "pointer").on("click", (a) ->
     graph_layer_showInformation a.name, a.shortDescription, a.layer
+    
+    if LayerInfo.controlPanel.selectedNode.indexOf(a) > -1
+      LayerInfo.controlPanel.selectedNode.splice(LayerInfo.controlPanel.selectedNode.indexOf(a),1)      
+    else
+      LayerInfo.controlPanel.selectedNode.push a
+    
+    if LayerInfo.controlPanel.selectedNode isnt 0    
+      LayerInfo.controlPanel.isShowLinks = true
+      $("#rel-button").addClass('on').html('YES')  
+    else  
+      LayerInfo.controlPanel.isShowLinks = false
+      $("#rel-button").addClass('on').html('NO')          
+    graph_layer_drawChart()    
     return
   )
   $("svg image").tipsy
-    gravity: "nw"
+    gravity: "e"
     html: not 0
     title: ->
       a = @__data__
-      "<span class='floatingp'>" + a.name + "</span><br/>Layer: <b>" + a.layer + " </b><br/>(click for more info)"
+      "<span class='floatingp'>" + a.name + "</span><br/>Layer: <b>" + a.layer + " </b>"
   
   c.select("#root").style("cx", a).style("cy", b).style("fill", "black").attr("r", 1).on("mousedown.drag", null).on "mouseover", null
   force.on "tick", ->
@@ -304,8 +346,8 @@ graph_layer_drawChart = () ->
 
 graph_layer_showInformation = (name,description,layer) ->
   $("#species_information").html("<p><b>"+name+"</b><br/>description: <b>"+description+" </b></p>")
-  a=Math.round($("#wikiframe").position().top-$("#species_information").position().top)
-  a=$("#species_information").height()-a-10
+  # a=Math.round($("#wikiframe").offset().top-$("#species_information").offset().top)
+  # a=$("#species_information").height()-a-10
   #$("#wikiframe").css("height",a+"px")
   
 graph_layer_getImageName = (a) ->
